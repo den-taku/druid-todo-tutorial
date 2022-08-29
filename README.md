@@ -1,3 +1,5 @@
+![gihub workflow status](https://github.com/den-taku/druid-todo-tutorial/actions/workflows/on_merge.yml/badge.svg)
+
 Hello! My name is Paul and today I'd like to help you make a slightly-more-complex-than-hello-world app using [Druid, a GUI framework written in Rust][druid]. In the classic GUI tradition we'll be working on a simple todo app. You'll need some familiarity with Rust to follow along, especially Rust's concept of [Traits][traits], but I'll try not to assume too much familiarity because a lot of what I know about Rust has been learned in parallel with learning Druid and contributing to the project.
 
 ## 1. Setup
