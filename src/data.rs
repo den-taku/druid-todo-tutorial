@@ -59,7 +59,7 @@ impl AppState {
 
 #[derive(Clone, Data, Lens, Serialize, Deserialize)]
 pub struct TodoItem {
-    done: bool,
+    pub done: bool,
     pub text: String,
 }
 

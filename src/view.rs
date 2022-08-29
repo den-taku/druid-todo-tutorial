@@ -1,5 +1,6 @@
 //! Composed widget
 
+use crate::controllers::TodoItemController;
 use crate::data::*;
 use druid::{
     widget::{Button, Checkbox, Flex, Label, List, TextBox},
@@ -10,7 +11,10 @@ fn todo_item() -> impl Widget<TodoItem> {
     let checkbox = Checkbox::new("").lens(TodoItem::done);
     let label = Label::raw().lens(TodoItem::text);
 
-    Flex::row().with_child(checkbox).with_flex_child(label, 1.)
+    Flex::row()
+        .with_child(checkbox)
+        .with_flex_child(label, 1.)
+        .controller(TodoItemController)
 }
 
 fn new_todo_textbox() -> impl Widget<AppState> {
