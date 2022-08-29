@@ -11,9 +11,13 @@ fn todo_item() -> impl Widget<TodoItem> {
     let checkbox = Checkbox::new("").lens(TodoItem::done);
     let label = Label::raw().lens(TodoItem::text);
 
+    let delete_button = Button::new("Delete").on_click(TodoItem::click_delete);
+
     Flex::row()
         .with_child(checkbox)
         .with_flex_child(label, 1.)
+        .with_flex_spacer(1.)
+        .with_child(delete_button)
         .controller(TodoItemController)
 }
 
@@ -32,7 +36,11 @@ fn new_todo_textbox() -> impl Widget<AppState> {
 }
 
 pub fn build_ui() -> impl Widget<AppState> {
+    let clear_completed_button = Button::new("Clear completed").on_click(AppState::clear_completed);
+
     Flex::column()
         .with_child(new_todo_textbox())
         .with_child(List::new(todo_item).lens(AppState::todos))
+        .with_flex_spacer(1.)
+        .with_child(clear_completed_button)
 }
