@@ -556,7 +556,7 @@ Finally, we'll create the "Delete" button and add it to our `todo_item`'s `Flex`
         .with_child(label)
         .with_flex_spacer(1.)
         .with_child(delete_button)
-        .controller(TodoItemController);
+        .controller(TodoItemController)
 ```
 
 Now if you re-run the app you'll have full delete functionality!
