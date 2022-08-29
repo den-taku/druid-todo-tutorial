@@ -1,3 +1,5 @@
+//! `Controller` submit command to the top to the widget tree to update
+
 use druid::{widget::Controller, Env, UpdateCtx, Widget};
 
 use crate::data::*;

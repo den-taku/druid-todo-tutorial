@@ -1,3 +1,4 @@
+//! intercept and handle `Commands`
 use druid::{AppDelegate, Command, DelegateCtx, Env, Handled, Selector, Target};
 use uuid::Uuid;
 
