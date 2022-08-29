@@ -2,7 +2,7 @@ Hello! My name is Paul and today I'd like to help you make a slightly-more-compl
 
 ## 1. Setup
 
-To get started let's create a new project: `cargo new druid-todo-tutorial`. Now `cd` into that folder and add `druid` as a dependency to the `Cargo.toml` file. This tutorial was written against Druid version 0.7: 
+To get started let's create a new project: `cargo new druid-todo-tutorial`. Now `cd` into that folder and add `druid` as a dependency to the `Cargo.toml` file. This tutorial was written against Druid version 0.7:
 
 ```toml
 [dependencies]
@@ -19,7 +19,7 @@ Alright let's get a basic window on the screen. To save ourselves the hassle of 
 
 ### data.rs
 
-This is where our application state, along with its relevant methods, will live. For now we'll just use an empty struct. State that we hand off to Druid must impl `Data`, which can be derived for structs containing many of the basic Rust types, as long as they're cheap to compare and cheap to clone. Druid uses cheap equality checks on the app state to know when it should re-render. 
+This is where our application state, along with its relevant methods, will live. For now we'll just use an empty struct. State that we hand off to Druid must impl `Data`, which can be derived for structs containing many of the basic Rust types, as long as they're cheap to compare and cheap to clone. Druid uses cheap equality checks on the app state to know when it should re-render.
 
 ```rust
 use druid::Data;
@@ -72,7 +72,7 @@ When you run this with `cargo run` you should get a nice little window with the 
 
 ## 3. Creating a list
 
-A todo list app needs a list of todos, so let's add that to our `data.rs`. We'll create a `TodoItem` struct and add a `im::Vector` of those to the `AppState`. I'm also deriving `Lens` for both of our structs, which I'll explain in a second. I'll also impl some `new` functions to make it easier to stub in dummy data. 
+A todo list app needs a list of todos, so let's add that to our `data.rs`. We'll create a `TodoItem` struct and add a `im::Vector` of those to the `AppState`. I'm also deriving `Lens` for both of our structs, which I'll explain in a second. I'll also impl some `new` functions to make it easier to stub in dummy data.
 
 _If you you don't want to use an immutable `Vector` for the todo list, you can also use a traditional Rust `Vec`, however you can't derive `Data` for `Vec` automatically (remember `Data` needs to be cheap to compare and cheap to clone). To solve this, wrap the `Vec` in an `Arc` and you'll be good. `Vector` is easy to mutate without cloning, but this is also usually possible with `Arc` using `Arc::make_mut`_.
 
@@ -140,9 +140,9 @@ What's interesting here is that if you look at `Druid's` implementation of `Chec
 
 Meanwhile, `Label::raw()` constructs a `RawLabel` widget which is generic on `T: TextStorage` which we obviously haven't implemented for `TodoItem`.
 
-Enter lenses. A lens is a datatype that gives access to a part of a larger data structure. Because we have derived `Lens` for our `TodoItem` struct, we can "lens" into the members of `TodoItem` to give these widgets only the portion of data they know how to work with. `.lens(TodoItem::done)` gives `Checkbox` the `bool` it craves, while `.lens(TodoItem::text)` gives `RawLabel` a `String`, for which `Druid` has already implemented `TextStorage`. 
+Enter lenses. A lens is a datatype that gives access to a part of a larger data structure. Because we have derived `Lens` for our `TodoItem` struct, we can "lens" into the members of `TodoItem` to give these widgets only the portion of data they know how to work with. `.lens(TodoItem::done)` gives `Checkbox` the `bool` it craves, while `.lens(TodoItem::text)` gives `RawLabel` a `String`, for which `Druid` has already implemented `TextStorage`.
 
-We don't need to do any lensing for the `Flex` widget because it doesn't need to look at its data, it simply passes it along to its children (this is common for many of the built-in layout widgets). The `List` widget requires a `Data` that impls its `ListIter` trait, but kindly offers default implmentations for a few basic collections, including `im::Vector`, so we just lens our `AppState` down to to `todos` and `List` knows what to do from there. 
+We don't need to do any lensing for the `Flex` widget because it doesn't need to look at its data, it simply passes it along to its children (this is common for many of the built-in layout widgets). The `List` widget requires a `Data` that impls its `ListIter` trait, but kindly offers default implmentations for a few basic collections, including `im::Vector`, so we just lens our `AppState` down to to `todos` and `List` knows what to do from there.
 
 _Lensing is one of Druid's hardest conceptual hurdles to climb, so don't stress if it doesn't click right away. The [Druid community][zulip] is always happy to help if you get stuck._
 
@@ -231,7 +231,7 @@ let add_todo_button = Button::new("Add")
         .on_click(|_ctx: &mut EventCtx, data: &mut AppState, _env: &Env| data.add_todo());
 ```
 
-What this `on_click` method ultimately boils down to is an implementation of Druid's `Widget` trait with only the `event` portion defined by us. That is to say, we're creating a `Widget` to wrap our `Button` widget, and we're going to intercept click events and do something with them, but otherwise we'll just let button handle everything else (everything else including other events like mouse hover, and other parts of the `Widget` impl like `layout`, `update`, and `paint`). 
+What this `on_click` method ultimately boils down to is an implementation of Druid's `Widget` trait with only the `event` portion defined by us. That is to say, we're creating a `Widget` to wrap our `Button` widget, and we're going to intercept click events and do something with them, but otherwise we'll just let button handle everything else (everything else including other events like mouse hover, and other parts of the `Widget` impl like `layout`, `update`, and `paint`).
 
 ## 5. Saving our state to disk
 
@@ -306,7 +306,7 @@ And now we can now generate our `initial_state` from the `.json` file during set
 let initial_state = AppState::load_from_json();
 ```
 
-Now if you run this you should get an empty todo list. If you add a couple items, then close and reopen the app, they should be persisted! With our hardcoded `"todos.json"` path this file will be generated in the root folder of our project, though obviously you can use any path you'd like.  
+Now if you run this you should get an empty todo list. If you add a couple items, then close and reopen the app, they should be persisted! With our hardcoded `"todos.json"` path this file will be generated in the root folder of our project, though obviously you can use any path you'd like.
 
 ## 6. Saving the "done" state
 
@@ -380,7 +380,7 @@ impl<W: Widget<TodoItem>> Controller<TodoItem, W> for TodoItemController {
 }
 ```
 
-This `Controller` is what will wrap our `TodoItem` widget. You'll see it's generic on `W: Widget<TodoItem>`, so any widget that satisfies `impl Widget<TodoItem>` is fair game. Unlike the `on_click` handler, which was overriding the `event` method of `Widget`, this `Controller` is overriding the `update` method. It's sitting in the widget tree and examining incoming changes to `data`. It checks if `old_data.done` is different than `data.done`, and if so it submits a command to the `ctx` which be sent to the top of the tree to be handled by our `AppDelegate`.   
+This `Controller` is what will wrap our `TodoItem` widget. You'll see it's generic on `W: Widget<TodoItem>`, so any widget that satisfies `impl Widget<TodoItem>` is fair game. Unlike the `on_click` handler, which was overriding the `event` method of `Widget`, this `Controller` is overriding the `update` method. It's sitting in the widget tree and examining incoming changes to `data`. It checks if `old_data.done` is different than `data.done`, and if so it submits a command to the `ctx` which be sent to the top of the tree to be handled by our `AppDelegate`.
 
 Now let's wire these up to our app.
 
@@ -499,7 +499,7 @@ Because `Uuid` doesn't impl Druid's `Data` trait, we can manually specify that D
 
 Now if you run the app you should see no todos in your list, even if you had some in `todos.json`. That's because we didn't make this backwards compatible, so serde failed to deserialize, and we just defaulted to an empty state. But if you create some more todos you should be seeing some uuids now.
 
-Okay so now with the help of our `Uuid` let's wire up a "Delete" button on each `todo_item`. 
+Okay so now with the help of our `Uuid` let's wire up a "Delete" button on each `todo_item`.
 
 First let's add a method to `AppState` to do the actual deleting. This looks a lot like our `clear_completed` function:
 
