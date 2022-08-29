@@ -2,11 +2,11 @@
 //!
 //! Druid uses `Data` to know when it should re-render
 
+use crate::delegate::DELETE;
 use druid::{im::Vector, Data, Env, EventCtx, Lens};
 use serde::{Deserialize, Serialize};
 use std::io::{BufReader, Error};
 use uuid::Uuid;
-use crate::delegate::DELETE;
 
 #[derive(Clone, Data, Lens)]
 pub struct AppState {
@@ -45,7 +45,7 @@ impl AppState {
         match file {
             Ok(file) => {
                 let reader = BufReader::new(file);
-                let todos: Vec<TodoItem> = serde_json::from_reader(reader).unwrap_or(vec![]);
+                let todos: Vec<TodoItem> = serde_json::from_reader(reader).unwrap_or_default();
                 Self {
                     todos: Vector::from(todos),
                     new_todo: String::new(),
