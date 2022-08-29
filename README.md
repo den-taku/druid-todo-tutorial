@@ -351,7 +351,7 @@ impl AppDelegate<AppState> for Delegate {
 
 The `AppDelegate` will wrap our whole app and intercept and handle the `Commands` we dispatch. Any widget can handle a `Command`, but this offers a nice and tidy place to handle top-level stuff and call methods on our `AppState`.
 
-A specific `Command` is identified by its `Selector`, which we define here with the const `SAVE`. Then in the `AppDelegate` we match on `cmd.is(SAVE)`. If it is save, we call our `save_to_json` function and declare that we've `Handled` the `Command`. For all other commands we'll say `Handled::No` so Druid knows to propogate that `Command` down the tree.
+A specific `Command` is identified by its `Selector`, which we define here with the const `SAVE`. Then in the `AppDelegate` we match on `cmd.is(SAVE)`. If it is save, we call our `save_to_json` function and declare that we've `Handled` the `Command`. For all other commands we'll say `Handled::No` so Druid knows to propagate that `Command` down the tree.
 
 ### controllers.rs
 
